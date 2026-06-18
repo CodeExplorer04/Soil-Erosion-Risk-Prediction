@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soil Loss Analysis Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="hero">
+        <h1>🌍 Soil Loss Analysis Dashboard</h1>
+        <p>Mini Project Using RUSLE Model</p>
+    </header>
+
+    <div class="upload-card">
+        <h2>Upload CSV File</h2>
+
+        <input type="file" id="fileInput" accept=".csv">
+
+        <button id="analyzeBtn">
+            Analyze Data
+        </button>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>Total Records</h3>
+            <p id="totalRecords">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Average Soil Loss</h3>
+            <p id="avgSoilLoss">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Maximum Soil Loss</h3>
+            <p id="maxSoilLoss">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>High Risk Count</h3>
+            <p id="highRiskCount">0</p>
+        </div>
+
+    </div>
+
+    <div class="charts">
+
+        <div class="chart-box">
+            <h2>Risk Distribution</h2>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h2>Rainfall vs Soil Loss</h2>
+            <canvas id="scatterChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="table-box">
+
+        <h2>Top 10 High Risk Districts</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>District</th>
+                    <th>Soil Loss</th>
+                    <th>Risk</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
