@@ -1,212 +1,71 @@
-let riskChart;
-let scatterChart;
+function predictSoilLoss(){
 
-document.getElementById("analyzeBtn").addEventListener("click", () => {
+    const rainfall =
+        parseFloat(
+            document.getElementById("rainfall").value
+        );
 
-    const file = document.getElementById("fileInput").files[0];
+    if(isNaN(rainfall)){
 
-    if (!file) {
-        alert("Select CSV File");
+        alert("Enter Monthly Rainfall");
+
         return;
     }
 
-    Papa.parse(file, {
-        header: true,
-        delimiter: ";",
-        skipEmptyLines: true,
+    const R = 0.5 * rainfall;
 
-        complete: function(results) {
+    const K = 0.3;
+    const LS = 2.0;
+    const C = 0.4;
+    const P = 0.8;
 
-            const data = results.data;
+    const soilLoss =
+        R * K * LS * C * P;
 
-            processData(data);
-        }
-    });
+    let risk = "";
+    let recommendation = "";
 
-});
+    if(soilLoss < 20){
 
-function processData(data) {
+        risk = "Low";
+        recommendation =
+        "Maintain current farming practices.";
 
-    let processed = [];
+    }
+    else if(soilLoss < 50){
 
-    data.forEach(row => {
+        risk = "Moderate";
+        recommendation =
+        "Increase vegetation cover.";
 
-        const keys = Object.keys(row);
+    }
+    else if(soilLoss < 100){
 
-        let rainfallValues = [];
+        risk = "High";
+        recommendation =
+        "Use contour farming and mulching.";
 
-        for(let i=3;i<keys.length;i++){
+    }
+    else{
 
-            rainfallValues.push(
-                Number(row[keys[i]]) || 0
-            );
-        }
+        risk = "Severe";
+        recommendation =
+        "Immediate soil conservation measures required.";
 
-        const monthlyRainfall =
-            rainfallValues.reduce((a,b)=>a+b,0);
-
-        const R = 0.5 * monthlyRainfall;
-
-        const K = 0.3;
-        const LS = 2.0;
-        const C = 0.4;
-        const P = 0.8;
-
-        const soilLoss =
-            R*K*LS*C*P;
-
-        let risk = "";
-
-        if(soilLoss < 20)
-            risk = "Low";
-
-        else if(soilLoss < 50)
-            risk = "Moderate";
-
-        else if(soilLoss < 100)
-            risk = "High";
-
-        else
-            risk = "Severe";
-
-        processed.push({
-
-            state:
-                row.state || row.State || "-",
-
-            district:
-                row.district || row.District || "-",
-
-            rainfall:
-                monthlyRainfall,
-
-            soilLoss:
-                soilLoss,
-
-            risk:
-                risk
-        });
-
-    });
-
-    updateStats(processed);
-
-    updateCharts(processed);
-
-    updateTable(processed);
-}
-
-function updateStats(data){
+    }
 
     document.getElementById(
-        "totalRecords"
-    ).innerText = data.length;
-
-    const avg =
-        data.reduce((s,r)=>s+r.soilLoss,0)
-        / data.length;
+        "soilLoss"
+    ).innerText =
+    soilLoss.toFixed(2);
 
     document.getElementById(
-        "avgSoilLoss"
-    ).innerText = avg.toFixed(2);
-
-    const max =
-        Math.max(...data.map(x=>x.soilLoss));
+        "riskLevel"
+    ).innerText =
+    risk;
 
     document.getElementById(
-        "maxSoilLoss"
-    ).innerText = max.toFixed(2);
-
-    const high =
-        data.filter(x =>
-            x.risk==="High" ||
-            x.risk==="Severe"
-        ).length;
-
-    document.getElementById(
-        "highRiskCount"
-    ).innerText = high;
-}
-
-function updateCharts(data){
-
-    const riskCounts = {
-        Low:0,
-        Moderate:0,
-        High:0,
-        Severe:0
-    };
-
-    data.forEach(x=>{
-        riskCounts[x.risk]++;
-    });
-
-    if(riskChart)
-        riskChart.destroy();
-
-    if(scatterChart)
-        scatterChart.destroy();
-
-    riskChart =
-        new Chart(
-            document.getElementById("riskChart"),
-            {
-                type:"pie",
-                data:{
-                    labels:Object.keys(riskCounts),
-                    datasets:[{
-                        data:Object.values(riskCounts)
-                    }]
-                }
-            }
-        );
-
-    scatterChart =
-        new Chart(
-            document.getElementById("scatterChart"),
-            {
-                type:"scatter",
-                data:{
-                    datasets:[{
-                        label:"Districts",
-                        data:data.map(r=>({
-                            x:r.rainfall,
-                            y:r.soilLoss
-                        }))
-                    }]
-                }
-            }
-        );
-}
-
-function updateTable(data){
-
-    const top10 =
-        [...data]
-        .sort(
-            (a,b)=>
-            b.soilLoss-a.soilLoss
-        )
-        .slice(0,10);
-
-    const tbody =
-        document.getElementById(
-            "tableBody"
-        );
-
-    tbody.innerHTML = "";
-
-    top10.forEach(row=>{
-
-        tbody.innerHTML += `
-        <tr>
-            <td>${row.state}</td>
-            <td>${row.district}</td>
-            <td>${row.soilLoss.toFixed(2)}</td>
-            <td>${row.risk}</td>
-        </tr>
-        `;
-
-    });
-
+        "recommendation"
+    ).innerText =
+    recommendation;
 }
