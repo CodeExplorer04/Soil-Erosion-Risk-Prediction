@@ -1,90 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soil Loss Analysis Dashboard</title>
-
+<title>Soil Loss Prediction System</title>
 <link rel="stylesheet" href="style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
 <div class="container">
 
-    <header class="hero">
-        <h1>🌍 Soil Loss Analysis Dashboard</h1>
-        <p>Mini Project Using RUSLE Model</p>
-    </header>
+    <div class="card">
 
-    <div class="upload-card">
-        <h2>Upload CSV File</h2>
+        <h1> Soil Loss Prediction System</h1>
+        <label>State</label>
+        <input type="text" id="state" placeholder="Enter State">
 
-        <input type="file" id="fileInput" accept=".csv">
+        <label>District</label>
+        <input type="text" id="district" placeholder="Enter District">
 
-        <button id="analyzeBtn">
-            Analyze Data
+        <label>Monthly Rainfall (mm)</label>
+        <input type="number" id="rainfall" placeholder="Enter Rainfall">
+
+        <button onclick="predictSoilLoss()">
+            Predict Soil Loss
         </button>
-    </div>
 
-    <div class="stats-grid">
+        <div class="result" id="resultBox">
 
-        <div class="stat-card">
-            <h3>Total Records</h3>
-            <p id="totalRecords">0</p>
+            <h2>Prediction Result</h2>
+
+            <p>
+                <strong>Soil Loss:</strong>
+                <span id="soilLoss">-</span>
+            </p>
+
+            <p>
+                <strong>Risk Level:</strong>
+                <span id="riskLevel">-</span>
+            </p>
+
+            <p>
+                <strong>Recommendation:</strong>
+                <span id="recommendation">-</span>
+            </p>
+
         </div>
-
-        <div class="stat-card">
-            <h3>Average Soil Loss</h3>
-            <p id="avgSoilLoss">0</p>
-        </div>
-
-        <div class="stat-card">
-            <h3>Maximum Soil Loss</h3>
-            <p id="maxSoilLoss">0</p>
-        </div>
-
-        <div class="stat-card">
-            <h3>High Risk Count</h3>
-            <p id="highRiskCount">0</p>
-        </div>
-
-    </div>
-
-    <div class="charts">
-
-        <div class="chart-box">
-            <h2>Risk Distribution</h2>
-            <canvas id="riskChart"></canvas>
-        </div>
-
-        <div class="chart-box">
-            <h2>Rainfall vs Soil Loss</h2>
-            <canvas id="scatterChart"></canvas>
-        </div>
-
-    </div>
-
-    <div class="table-box">
-
-        <h2>Top 10 High Risk Districts</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>State</th>
-                    <th>District</th>
-                    <th>Soil Loss</th>
-                    <th>Risk</th>
-                </tr>
-            </thead>
-
-            <tbody id="tableBody">
-            </tbody>
-        </table>
 
     </div>
 
