@@ -1,71 +1,80 @@
-function predictSoilLoss(){
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-    const rainfall =
-        parseFloat(
-            document.getElementById("rainfall").value
-        );
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#4caf50,#2196f3);
+}
 
-    if(isNaN(rainfall)){
+.container{
+width:100%;
+max-width:600px;
+padding:20px;
+}
 
-        alert("Enter Monthly Rainfall");
+.card{
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
 
-        return;
-    }
+h1{
+text-align:center;
+margin-bottom:10px;
+color:#2e7d32;
+}
 
-    const R = 0.5 * rainfall;
+p{
+text-align:center;
+margin-bottom:20px;
+}
 
-    const K = 0.3;
-    const LS = 2.0;
-    const C = 0.4;
-    const P = 0.8;
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:bold;
+}
 
-    const soilLoss =
-        R * K * LS * C * P;
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:10px;
+}
 
-    let risk = "";
-    let recommendation = "";
+button{
+width:100%;
+margin-top:20px;
+padding:14px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
 
-    if(soilLoss < 20){
+button:hover{
+background:#1b5e20;
+}
 
-        risk = "Low";
-        recommendation =
-        "Maintain current farming practices.";
+.result{
+margin-top:25px;
+padding:20px;
+background:#f5f5f5;
+border-radius:10px;
+}
 
-    }
-    else if(soilLoss < 50){
-
-        risk = "Moderate";
-        recommendation =
-        "Increase vegetation cover.";
-
-    }
-    else if(soilLoss < 100){
-
-        risk = "High";
-        recommendation =
-        "Use contour farming and mulching.";
-
-    }
-    else{
-
-        risk = "Severe";
-        recommendation =
-        "Immediate soil conservation measures required.";
-
-    }
-
-    document.getElementById(
-        "soilLoss"
-    ).innerText =
-    soilLoss.toFixed(2);
-
-    document.getElementById(
-        "riskLevel"
-    ).innerText =
-    risk;
-
-    document.getElementById(
-        "recommendation"
-    ).innerText =
-    recommendation;
+.result h2{
+margin-bottom:15px;
+text-align:center;
 }
